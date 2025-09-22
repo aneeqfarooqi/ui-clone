@@ -5,23 +5,18 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Netflix Clone — Aneeq</title>
 
-  <!-- Tailwind CDN (play) -->
+  <!-- Tailwind CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
-    // Tailwind config (colors / fonts)
     tailwind.config = {
       theme: {
         extend: {
           colors: {
             netflixRed: "#e50914",
             netflixDark: "#0b0b0b",
-            netflixGray: "#2a2a2a"
-          },
-          backgroundImage: {
-            'hero-pattern': "url('assets/images/backgroung.jpg')"
           },
           fontFamily: {
-            'sans': ['Inter', 'system-ui', 'Segoe UI', 'Roboto', 'Helvetica', 'Arial']
+            sans: ['Inter', 'system-ui', 'Segoe UI', 'Roboto', 'Helvetica', 'Arial']
           }
         }
       }
@@ -29,306 +24,274 @@
   </script>
 
   <style>
-    /* small custom styles */
     .gradient-overlay {
       background: linear-gradient(180deg, rgba(11,11,11,0.25) 0%, rgba(11,11,11,0.75) 60%, rgba(11,11,11,0.95) 100%);
     }
-    /* scrollbar for carousels */
     .no-scrollbar::-webkit-scrollbar { display: none; }
     .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-    /* subtle card hover glow */
-    .card-hover:hover { box-shadow: 0 12px 30px rgba(0,0,0,0.6); transform: translateY(-6px); }
+    .card-hover:hover { box-shadow: 0 10px 25px rgba(0,0,0,0.6); transform: translateY(-4px); }
   </style>
 </head>
-<body class="bg-black text-white antialiased">
+<body class="bg-black text-white font-sans">
 
-  <!-- NAV -->
-  <header class="fixed top-0 left-0 right-0 z-40">
-    <div class="max-w-7xl mx-auto flex items-center justify-between px-6 py-4">
-      <a href="#" class="flex items-center gap-3">
-        <img src="assets/images/logo.png" alt="logo" class="h-8 w-auto object-contain">
-        <span class="hidden md:inline font-semibold tracking-wide">AneeqFlix</span>
+  <!-- NAVBAR -->
+  <header class="fixed top-0 w-full z-40 bg-black/70 backdrop-blur-md">
+    <div class="max-w-7xl mx-auto flex items-center justify-between px-4 md:px-8 py-3">
+      <!-- Logo -->
+      <a href="#" class="flex items-center gap-2">
+        <img src="assets/images/logo.png" alt="logo" class="h-7 sm:h-9">
+        <span class="hidden sm:inline font-bold">AneeqFlix</span>
       </a>
 
+      <!-- Desktop Menu -->
       <nav class="hidden md:flex items-center gap-6 text-sm">
-        <a class="hover:text-netflixRed" href="#home">Home</a>
-        <a class="hover:text-netflixRed" href="#trending">Trending</a>
-        <a class="hover:text-netflixRed" href="#mylist">My List</a>
-        <a class="hover:text-netflixRed" href="#new">New & Popular</a>
+        <a href="#home" class="hover:text-netflixRed">Home</a>
+        <a href="#trending" class="hover:text-netflixRed">Trending</a>
+        <a href="#reasons" class="hover:text-netflixRed">Why Join</a>
+        <a href="#plans" class="hover:text-netflixRed">Plans</a>
+        <a href="#testimonials" class="hover:text-netflixRed">Testimonials</a>
+        <a href="#faq" class="hover:text-netflixRed">FAQ</a>
       </nav>
 
-      <div class="flex items-center gap-3">
-        <button id="langBtn" class="text-sm px-3 py-1 border border-neutral-700 rounded text-neutral-200 hidden sm:inline">EN</button>
-        <button id="signinBtn" class="bg-netflixRed text-black px-4 py-1 rounded text-sm font-semibold hover:brightness-95">Sign In</button>
-        <!-- mobile menu -->
-        <button id="mobileMenuBtn" class="md:hidden ml-2 p-2 rounded bg-black/30">
-          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+      <!-- Right -->
+      <div class="flex items-center gap-2">
+        <button id="signinBtn" class="bg-netflixRed text-black px-4 py-1.5 rounded text-sm font-semibold hover:brightness-95">Sign In</button>
+        <button id="menuBtn" class="md:hidden p-2 rounded hover:bg-white/10">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+          </svg>
         </button>
       </div>
     </div>
 
-    <!-- mobile nav -->
-    <div id="mobileNav" class="md:hidden hidden bg-black/90 border-t border-neutral-800">
-      <div class="px-6 py-4 flex flex-col gap-3">
-        <a href="#home" class="py-2">Home</a>
-        <a href="#trending" class="py-2">Trending</a>
-        <a href="#mylist" class="py-2">My List</a>
-        <a href="#new" class="py-2">New & Popular</a>
-      </div>
+    <!-- Mobile Menu -->
+    <div id="mobileMenu" class="hidden md:hidden bg-black/90 px-4 py-3 space-y-2">
+      <a href="#home" class="block py-1">Home</a>
+      <a href="#trending" class="block py-1">Trending</a>
+      <a href="#reasons" class="block py-1">Why Join</a>
+      <a href="#plans" class="block py-1">Plans</a>
+      <a href="#testimonials" class="block py-1">Testimonials</a>
+      <a href="#faq" class="block py-1">FAQ</a>
     </div>
   </header>
 
   <!-- HERO -->
-  <main id="home" class="pt-20">
-    <section class="relative min-h-[82vh] flex items-center">
-      <!-- background image -->
-      <div class="absolute inset-0 bg-cover bg-center opacity-90" style="background-image:url('assets/images/backgroung.jpg')"></div>
-      <div class="absolute inset-0 gradient-overlay"></div>
+  <section id="home" class="relative min-h-[90vh] flex items-center justify-center text-center">
+    <div class="absolute inset-0 bg-cover bg-center" style="background-image:url('assets/images/backgroung.jpg')"></div>
+    <div class="absolute inset-0 gradient-overlay"></div>
 
-      <div class="max-w-7xl mx-auto relative z-10 px-6">
-        <div class="max-w-3xl space-y-6">
-          <h1 class="text-4xl md:text-6xl font-extrabold tracking-tight">Unlimited movies, TV shows, and more.</h1>
-          <p class="text-lg md:text-xl text-neutral-300">Watch anywhere. Cancel anytime.</p>
+    <div class="relative z-10 max-w-3xl px-4 space-y-6">
+      <h1 class="text-3xl sm:text-5xl md:text-6xl font-extrabold">Unlimited movies, TV shows, and more.</h1>
+      <p class="text-lg md:text-xl text-neutral-300">Starts at Rs 250. Cancel anytime.</p>
 
-          <!-- email CTA -->
-          <form id="ctaForm" class="flex flex-col sm:flex-row gap-4">
-            <input id="emailInput" type="email" required placeholder="Email address" class="flex-1 px-4 py-3 rounded bg-black/60 border border-neutral-700 focus:outline-netflixRed" />
-            <button type="submit" class="bg-netflixRed text-black px-6 py-3 rounded font-semibold hover:opacity-95">Get Started</button>
-          </form>
-          <p class="text-neutral-400 text-sm">Ready to watch? Enter your email to create or restart your membership.</p>
+      <!-- Email CTA -->
+      <form id="ctaForm" class="flex flex-col sm:flex-row gap-3 sm:gap-4">
+        <input type="email" required placeholder="Email address" class="flex-1 px-4 py-3 rounded bg-black/60 border border-neutral-600 focus:outline-netflixRed">
+        <button type="submit" class="bg-netflixRed text-black px-6 py-3 rounded font-semibold hover:opacity-95">Get Started</button>
+      </form>
+      <p class="text-sm text-neutral-400">Ready to watch? Enter your email to create or restart your membership.</p>
+    </div>
+  </section>
+
+  <!-- TRENDING -->
+  <section id="trending" class="max-w-7xl mx-auto px-4 md:px-8 py-12">
+    <h2 class="text-2xl font-semibold mb-4">Trending Now</h2>
+    <div class="flex gap-4 overflow-x-auto no-scrollbar snap-x">
+      <article class="min-w-[150px] sm:min-w-[180px] md:min-w-[220px] snap-start card-hover bg-neutral-900 rounded overflow-hidden">
+        <img src="assets/images/badboys.jpg" alt="Bad Boys" class="w-full h-40 sm:h-52 md:h-60 object-cover">
+        <div class="p-2 sm:p-3">
+          <h3 class="text-sm sm:text-base font-semibold">Bad Boys</h3>
         </div>
+      </article>
+      <article class="min-w-[150px] sm:min-w-[180px] md:min-w-[220px] snap-start card-hover bg-neutral-900 rounded overflow-hidden">
+        <img src="assets/images/elegance.jpg" alt="Elegance" class="w-full h-40 sm:h-52 md:h-60 object-cover">
+        <div class="p-2 sm:p-3">
+          <h3 class="text-sm sm:text-base font-semibold">Elegance</h3>
+        </div>
+      </article>
+      <article class="min-w-[150px] sm:min-w-[180px] md:min-w-[220px] snap-start card-hover bg-neutral-900 rounded overflow-hidden">
+        <img src="assets/images/hindi.jpg" alt="Hindi Show" class="w-full h-40 sm:h-52 md:h-60 object-cover">
+        <div class="p-2 sm:p-3">
+          <h3 class="text-sm sm:text-base font-semibold">Hindi Show</h3>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <!-- REASONS -->
+  <section id="reasons" class="max-w-7xl mx-auto px-4 md:px-8 py-12">
+    <h2 class="text-2xl font-semibold mb-6">More reasons to join</h2>
+    <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+      <div class="bg-gradient-to-b from-neutral-800 to-neutral-900 rounded p-6 text-center">
+        <img src="assets/images/monitor.png" class="w-14 mx-auto mb-3" alt="">
+        <h3 class="font-semibold">Enjoy on your TV</h3>
+        <p class="text-sm text-neutral-400 mt-2">Smart TVs, PlayStation, Xbox, Chromecast and more.</p>
       </div>
-    </section>
-
-    <!-- ROW: Trending (horizontal carousel) -->
-    <section id="trending" class="max-w-7xl mx-auto px-6 py-8">
-      <h2 class="text-2xl font-semibold mb-4">Trending Now</h2>
-      <div id="trendingRow" class="flex gap-4 overflow-x-auto no-scrollbar snap-x snap-mandatory">
-        <!-- repeatable movie card -->
-        <article class="min-w-[160px] md:min-w-[220px] snap-start card-hover transition-transform duration-300 rounded overflow-hidden bg-neutral-900">
-          <img src="assets/images/badboys.jpg" alt="Bad Boys" class="w-full h-40 md:h-56 object-cover">
-          <div class="p-3">
-            <h3 class="text-sm font-semibold">Bad Boys</h3>
-            <p class="text-xs text-neutral-400">Action • 2020</p>
-          </div>
-        </article>
-
-        <article class="min-w-[160px] md:min-w-[220px] snap-start card-hover rounded overflow-hidden bg-neutral-900">
-          <img src="assets/images/elegance.jpg" alt="Elegance" class="w-full h-40 md:h-56 object-cover">
-          <div class="p-3">
-            <h3 class="text-sm font-semibold">Elegance</h3>
-            <p class="text-xs text-neutral-400">Drama • 2022</p>
-          </div>
-        </article>
-
-        <article class="min-w-[160px] md:min-w-[220px] snap-start card-hover rounded overflow-hidden bg-neutral-900">
-          <img src="assets/images/hindi.jpg" alt="Hindi Series" class="w-full h-40 md:h-56 object-cover">
-          <div class="p-3">
-            <h3 class="text-sm font-semibold">Hindi Show</h3>
-            <p class="text-xs text-neutral-400">Thriller • 2021</p>
-          </div>
-        </article>
-
-        <article class="min-w-[160px] md:min-w-[220px] snap-start card-hover rounded overflow-hidden bg-neutral-900">
-          <img src="assets/images/rebelridge.jpg" alt="Rebel Ridge" class="w-full h-40 md:h-56 object-cover">
-          <div class="p-3">
-            <h3 class="text-sm font-semibold">Rebel Ridge</h3>
-            <p class="text-xs text-neutral-400">Crime • 2023</p>
-          </div>
-        </article>
-
-        <!-- duplicate to fill -->
-        <article class="min-w-[160px] md:min-w-[220px] snap-start card-hover rounded overflow-hidden bg-neutral-900">
-          <img src="assets/images/badboys.jpg" alt="Bad Boys 2" class="w-full h-40 md:h-56 object-cover">
-          <div class="p-3">
-            <h3 class="text-sm font-semibold">Bad Boys 2</h3>
-            <p class="text-xs text-neutral-400">Action • 2019</p>
-          </div>
-        </article>
+      <div class="bg-gradient-to-b from-neutral-800 to-neutral-900 rounded p-6 text-center">
+        <img src="assets/images/monitor.png" class="w-14 mx-auto mb-3" alt="">
+        <h3 class="font-semibold">Download for offline</h3>
+        <p class="text-sm text-neutral-400 mt-2">Save and watch anywhere.</p>
       </div>
-    </section>
-
-    <!-- ROW: More reasons (grid) -->
-    <section class="max-w-7xl mx-auto px-6 py-8">
-      <h2 class="text-2xl font-semibold mb-6">More reasons to join</h2>
-
-      <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
-        <div class="bg-gradient-to-b from-neutral-900 to-neutral-800 rounded p-5 text-center">
-          <img src="assets/images/monitor.png" alt="TV" class="mx-auto w-20 h-20 object-contain mb-4">
-          <h3 class="font-semibold mb-2">Enjoy on your TV</h3>
-          <p class="text-sm text-neutral-400">Watch on Smart TVs, PlayStation, Xbox, Chromecast and more.</p>
-        </div>
-
-        <div class="bg-gradient-to-b from-neutral-900 to-neutral-800 rounded p-5 text-center">
-          <img src="assets/images/monitor.png" alt="Download" class="mx-auto w-20 h-20 object-contain mb-4">
-          <h3 class="font-semibold mb-2">Download for offline</h3>
-          <p class="text-sm text-neutral-400">Save your favorites and watch offline.</p>
-        </div>
-
-        <div class="bg-gradient-to-b from-neutral-900 to-neutral-800 rounded p-5 text-center">
-          <img src="assets/images/monitor.png" alt="Phone" class="mx-auto w-20 h-20 object-contain mb-4">
-          <h3 class="font-semibold mb-2">Watch everywhere</h3>
-          <p class="text-sm text-neutral-400">Stream on phone, tablet, laptop and TV.</p>
-        </div>
-
-        <div class="bg-gradient-to-b from-neutral-900 to-neutral-800 rounded p-5 text-center">
-          <img src="assets/images/monitor.png" alt="Kids" class="mx-auto w-20 h-20 object-contain mb-4">
-          <h3 class="font-semibold mb-2">Kids profiles</h3>
-          <p class="text-sm text-neutral-400">Create kids profiles with parental controls.</p>
-        </div>
+      <div class="bg-gradient-to-b from-neutral-800 to-neutral-900 rounded p-6 text-center">
+        <img src="assets/images/monitor.png" class="w-14 mx-auto mb-3" alt="">
+        <h3 class="font-semibold">Watch everywhere</h3>
+        <p class="text-sm text-neutral-400 mt-2">On phone, tablet, laptop & TV.</p>
       </div>
-    </section>
-
-    <!-- FAQ -->
-    <section id="faq" class="max-w-4xl mx-auto px-6 py-12">
-      <h2 class="text-2xl font-semibold mb-6">Frequently Asked Questions</h2>
-
-      <div id="faqList" class="space-y-3">
-        <button class="faq-item w-full text-left p-4 bg-neutral-900 rounded flex justify-between items-center">
-          <span>What is Netflix?</span><span class="text-neutral-400">+</span>
-        </button>
-        <button class="faq-item w-full text-left p-4 bg-neutral-900 rounded flex justify-between items-center">
-          <span>How much does Netflix cost?</span><span class="text-neutral-400">+</span>
-        </button>
-        <button class="faq-item w-full text-left p-4 bg-neutral-900 rounded flex justify-between items-center">
-          <span>Where can I watch?</span><span class="text-neutral-400">+</span>
-        </button>
-        <button class="faq-item w-full text-left p-4 bg-neutral-900 rounded flex justify-between items-center">
-          <span>How do I cancel?</span><span class="text-neutral-400">+</span>
-        </button>
+      <div class="bg-gradient-to-b from-neutral-800 to-neutral-900 rounded p-6 text-center">
+        <img src="assets/images/monitor.png" class="w-14 mx-auto mb-3" alt="">
+        <h3 class="font-semibold">Kids profiles</h3>
+        <p class="text-sm text-neutral-400 mt-2">A safe space for kids to watch.</p>
       </div>
-    </section>
+    </div>
+  </section>
 
-    <!-- Footer -->
-    <footer class="bg-neutral-900 mt-12">
-      <div class="max-w-7xl mx-auto px-6 py-10 grid grid-cols-1 md:grid-cols-4 gap-6 text-neutral-400">
-        <div>
-          <h4 class="text-white font-semibold mb-3">Questions? Contact us.</h4>
-          <p class="text-sm">Call: 0800-000-000</p>
-        </div>
-        <div>
-          <ul class="space-y-2 text-sm">
-            <li>FAQ</li>
-            <li>Investor Relations</li>
-            <li>Privacy</li>
-            <li>Speed Test</li>
+  <!-- NEW SECTION: PLANS -->
+  <section id="plans" class="bg-neutral-950 py-12">
+    <div class="max-w-6xl mx-auto px-4 text-center">
+      <h2 class="text-3xl font-bold mb-8">Choose Your Plan</h2>
+      <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        <div class="bg-neutral-900 rounded-lg p-6 border border-neutral-800 hover:border-netflixRed transition">
+          <h3 class="text-xl font-semibold mb-3">Basic</h3>
+          <p class="text-3xl font-bold mb-4">Rs 250<span class="text-base">/mo</span></p>
+          <ul class="text-neutral-400 text-sm mb-6 space-y-2">
+            <li>Good video quality</li>
+            <li>Watch on 1 device</li>
+            <li>Cancel anytime</li>
           </ul>
+          <button class="bg-netflixRed text-black px-6 py-2 rounded font-semibold hover:opacity-95">Get Basic</button>
         </div>
-        <div>
-          <ul class="space-y-2 text-sm">
-            <li>Help Center</li>
-            <li>Jobs</li>
-            <li>Cookie Preferences</li>
-            <li>Legal Notices</li>
+        <div class="bg-neutral-900 rounded-lg p-6 border border-netflixRed shadow-lg">
+          <h3 class="text-xl font-semibold mb-3">Standard</h3>
+          <p class="text-3xl font-bold mb-4">Rs 450<span class="text-base">/mo</span></p>
+          <ul class="text-neutral-400 text-sm mb-6 space-y-2">
+            <li>Better video quality</li>
+            <li>Watch on 2 devices</li>
+            <li>Cancel anytime</li>
           </ul>
+          <button class="bg-netflixRed text-black px-6 py-2 rounded font-semibold hover:opacity-95">Get Standard</button>
         </div>
-        <div>
-          <ul class="space-y-2 text-sm">
-            <li>Account</li>
-            <li>Ways to Watch</li>
-            <li>Corporate Information</li>
-            <li>Only on Netflix</li>
+        <div class="bg-neutral-900 rounded-lg p-6 border border-neutral-800 hover:border-netflixRed transition">
+          <h3 class="text-xl font-semibold mb-3">Premium</h3>
+          <p class="text-3xl font-bold mb-4">Rs 700<span class="text-base">/mo</span></p>
+          <ul class="text-neutral-400 text-sm mb-6 space-y-2">
+            <li>Ultra HD available</li>
+            <li>Watch on 4 devices</li>
+            <li>Cancel anytime</li>
           </ul>
+          <button class="bg-netflixRed text-black px-6 py-2 rounded font-semibold hover:opacity-95">Get Premium</button>
         </div>
       </div>
-      <div class="border-t border-neutral-800"></div>
-      <div class="max-w-7xl mx-auto px-6 py-6 text-neutral-500 text-sm">© 2025 AneeqFlix</div>
-    </footer>
-  </main>
+    </div>
+  </section>
 
-  <!-- Sign In Modal -->
-  <div id="signModal" class="fixed inset-0 bg-black/70 hidden items-center justify-center z-50">
-    <div class="bg-neutral-900 rounded-lg max-w-md w-full p-6">
-      <h3 class="text-xl font-semibold mb-4">Sign In</h3>
-      <form id="signForm" class="space-y-3">
-        <input name="email" type="email" placeholder="Email" required class="w-full px-4 py-3 rounded bg-black/50 border border-neutral-700" />
-        <input name="password" type="password" placeholder="Password" required class="w-full px-4 py-3 rounded bg-black/50 border border-neutral-700" />
-        <div class="flex items-center justify-between">
-          <label class="text-sm text-neutral-400"><input type="checkbox" class="mr-2"> Remember me</label>
-          <a href="#" class="text-sm text-netflixRed">Need help?</a>
+  <!-- NEW SECTION: TESTIMONIALS -->
+  <section id="testimonials" class="max-w-7xl mx-auto px-4 md:px-8 py-12">
+    <h2 class="text-2xl font-semibold mb-8 text-center">What Our Members Say</h2>
+    <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      <div class="bg-neutral-900 p-6 rounded shadow">
+        <p class="text-neutral-300 mb-4">"Absolutely love AneeqFlix! Smooth streaming and amazing selection."</p>
+        <div class="flex items-center gap-3">
+          <img src="https://i.pravatar.cc/40?img=1" alt="User" class="w-10 h-10 rounded-full">
+          <div>
+            <p class="font-semibold">Ali R.</p>
+            <p class="text-xs text-neutral-400">Karachi</p>
+          </div>
         </div>
-        <div class="flex gap-3">
-          <button type="submit" class="flex-1 bg-netflixRed py-2 rounded font-semibold">Sign In</button>
-          <button type="button" id="closeModal" class="flex-1 bg-neutral-700 py-2 rounded">Close</button>
+      </div>
+      <div class="bg-neutral-900 p-6 rounded shadow">
+        <p class="text-neutral-300 mb-4">"The offline downloads are a lifesaver when traveling."</p>
+        <div class="flex items-center gap-3">
+          <img src="https://i.pravatar.cc/40?img=2" alt="User" class="w-10 h-10 rounded-full">
+          <div>
+            <p class="font-semibold">Sara K.</p>
+            <p class="text-xs text-neutral-400">Lahore</p>
+          </div>
         </div>
+      </div>
+      <div class="bg-neutral-900 p-6 rounded shadow">
+        <p class="text-neutral-300 mb-4">"Better than cable. Affordable and easy to use."</p>
+        <div class="flex items-center gap-3">
+          <img src="https://i.pravatar.cc/40?img=3" alt="User" class="w-10 h-10 rounded-full">
+          <div>
+            <p class="font-semibold">Ahmed M.</p>
+            <p class="text-xs text-neutral-400">Islamabad</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section id="faq" class="max-w-3xl mx-auto px-4 py-12">
+    <h2 class="text-2xl font-semibold mb-6">Frequently Asked Questions</h2>
+    <div id="faqList" class="space-y-3">
+      <button class="faq w-full text-left p-4 bg-neutral-800 rounded flex justify-between items-center">
+        <span>What is Netflix?</span><span>+</span>
+      </button>
+      <button class="faq w-full text-left p-4 bg-neutral-800 rounded flex justify-between items-center">
+        <span>How much does Netflix cost?</span><span>+</span>
+      </button>
+      <button class="faq w-full text-left p-4 bg-neutral-800 rounded flex justify-between items-center">
+        <span>Where can I watch?</span><span>+</span>
+      </button>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="bg-neutral-900">
+    <div class="max-w-7xl mx-auto px-4 md:px-8 py-10 grid gap-6 sm:grid-cols-2 md:grid-cols-4 text-neutral-400 text-sm">
+      <div>
+        <h4 class="text-white font-semibold mb-3">Questions? Contact us.</h4>
+        <p>Call: 0800-000-000</p>
+      </div>
+      <ul class="space-y-2">
+        <li>FAQ</li><li>Investor Relations</li><li>Privacy</li><li>Speed Test</li>
+      </ul>
+      <ul class="space-y-2">
+        <li>Help Center</li><li>Jobs</li><li>Cookie Preferences</li><li>Legal Notices</li>
+      </ul>
+      <ul class="space-y-2">
+        <li>Account</li><li>Ways to Watch</li><li>Corporate Info</li><li>Only on Netflix</li>
+      </ul>
+    </div>
+    <div class="text-center text-neutral-500 py-4 border-t border-neutral-800 text-xs">© 2025 AneeqFlix</div>
+  </footer>
+
+  <!-- SIGN-IN MODAL -->
+  <div id="signModal" class="hidden fixed inset-0 bg-black/70 z-50 flex items-center justify-center">
+    <div class="bg-neutral-900 rounded p-6 w-full max-w-sm">
+      <h3 class="text-lg font-semibold mb-4">Sign In</h3>
+      <form class="space-y-3">
+        <input type="email" placeholder="Email" class="w-full px-4 py-2 rounded bg-black/60 border border-neutral-700">
+        <input type="password" placeholder="Password" class="w-full px-4 py-2 rounded bg-black/60 border border-neutral-700">
+        <button class="w-full bg-netflixRed py-2 rounded font-semibold">Sign In</button>
+        <button type="button" id="closeModal" class="w-full bg-neutral-700 py-2 rounded">Close</button>
       </form>
     </div>
   </div>
 
   <!-- JS -->
   <script>
-    // Mobile menu toggle
-    const mobileBtn = document.getElementById('mobileMenuBtn');
-    const mobileNav = document.getElementById('mobileNav');
-    mobileBtn && mobileBtn.addEventListener('click', () => mobileNav.classList.toggle('hidden'));
+    // Mobile Menu
+    const menuBtn = document.getElementById("menuBtn");
+    const mobileMenu = document.getElementById("mobileMenu");
+    menuBtn.addEventListener("click", () => mobileMenu.classList.toggle("hidden"));
 
-    // Sign in modal
-    const signBtn = document.getElementById('signinBtn');
-    const signModal = document.getElementById('signModal');
-    const closeModal = document.getElementById('closeModal');
-    signBtn && signBtn.addEventListener('click', () => signModal.classList.remove('hidden'));
-    closeModal && closeModal.addEventListener('click', () => signModal.classList.add('hidden'));
-    window.addEventListener('click', (e) => {
-      if (e.target === signModal) signModal.classList.add('hidden');
-    });
+    // Modal
+    const signBtn = document.getElementById("signinBtn");
+    const signModal = document.getElementById("signModal");
+    const closeModal = document.getElementById("closeModal");
+    signBtn.addEventListener("click", () => signModal.classList.remove("hidden"));
+    closeModal.addEventListener("click", () => signModal.classList.add("hidden"));
 
-    // Carousel drag to scroll
-    const trendingRow = document.getElementById('trendingRow');
-    let isDown = false, startX, scrollLeft;
-    if (trendingRow) {
-      trendingRow.addEventListener('mousedown', (e) => {
-        isDown = true;
-        trendingRow.classList.add('cursor-grab');
-        startX = e.pageX - trendingRow.offsetLeft;
-        scrollLeft = trendingRow.scrollLeft;
-      });
-      trendingRow.addEventListener('mouseleave', () => { isDown = false; trendingRow.classList.remove('cursor-grab'); });
-      trendingRow.addEventListener('mouseup', () => { isDown = false; trendingRow.classList.remove('cursor-grab'); });
-      trendingRow.addEventListener('mousemove', (e) => {
-        if (!isDown) return;
-        e.preventDefault();
-        const x = e.pageX - trendingRow.offsetLeft;
-        const walk = (x - startX) * 2; //scroll-fast
-        trendingRow.scrollLeft = scrollLeft - walk;
-      });
-      // touch support
-      trendingRow.addEventListener('touchstart', (e) => { startX = e.touches[0].pageX - trendingRow.offsetLeft; scrollLeft = trendingRow.scrollLeft; });
-      trendingRow.addEventListener('touchmove', (e) => { const x = e.touches[0].pageX - trendingRow.offsetLeft; const walk = (x - startX) * 2; trendingRow.scrollLeft = scrollLeft - walk; });
-    }
-
-    // FAQ accordion
-    document.querySelectorAll('.faq-item').forEach(btn => {
-      btn.addEventListener('click', () => {
-        const open = btn.nextElementSibling && btn.nextElementSibling.classList.contains('faq-open');
-        // close others
-        document.querySelectorAll('.faq-answer').forEach(a => a.remove());
-        document.querySelectorAll('.faq-item').forEach(b => b.querySelector('span:last-child').textContent = '+');
-        if (!open) {
-          const answer = document.createElement('div');
-          answer.className = 'faq-answer p-4 bg-neutral-800 text-neutral-300';
-          answer.textContent = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Replace this with your real FAQ answer.";
-          btn.after(answer);
-          btn.querySelector('span:last-child').textContent = '−';
-          answer.classList.add('faq-open');
-        }
+    // FAQ toggle
+    document.querySelectorAll(".faq").forEach(btn=>{
+      btn.addEventListener("click",()=>{
+        btn.classList.toggle("bg-netflixRed");
+        btn.querySelector("span:last-child").textContent = btn.querySelector("span:last-child").textContent === "+" ? "-" : "+";
       });
     });
-
-    // CTA form (simple validation + scroll)
-    const ctaForm = document.getElementById('ctaForm');
-    ctaForm && ctaForm.addEventListener('submit', (e) => {
-      e.preventDefault();
-      const email = document.getElementById('emailInput').value.trim();
-      if (!email || !email.includes('@')) {
-        alert('Please enter a valid email');
-        return;
-      }
-      // simulate action — scroll to trending
-      document.getElementById('trending').scrollIntoView({ behavior: 'smooth' });
-    });
-
-    // Accessibility: keyboard close modal ESC
-    window.addEventListener('keydown', (e) => { if (e.key === 'Escape') signModal.classList.add('hidden'); });
   </script>
+
 </body>
 </html>
